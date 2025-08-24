@@ -34,7 +34,15 @@
 
     <div>
       <label class="block text-sm mb-1">Telefone</label>
-      <input type="tel" name="client_phone" required placeholder="(00) 00000-0000" class="w-full rounded-lg border px-3 py-2">
+      <input 
+        type="tel" 
+        name="client_phone" 
+        required 
+        placeholder="(00) 00000-0000" 
+        class="w-full rounded-lg border px-3 py-2"
+        title="Digite no formato (00) 00000-0000 ou (00) 0000-0000"
+        pattern="\(\d{2}\)\s?\d{4,5}-\d{4}" 
+      >
     </div>
 
     <div>
