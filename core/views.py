@@ -13,6 +13,7 @@ from .models import TimeOption, Service, Appointment, Manager
 from .forms import ManagerLoginForm, TimeOptionForm, ServiceForm
 from .auth import manager_required, SESSION_KEY
 from datetime import datetime, date
+from django.utils import timezone
 
 # ---------------------- ÁREA PÚBLICA (já existentes) ----------------------
 
@@ -173,7 +174,7 @@ def manager_time_options(request):
     else:
         form = TimeOptionForm()
 
-    times = TimeOption.objects.order_by("horario")
+    times = TimeOption.objects.filter(trashed=False).order_by("horario")
     return render(request, "core/manager/time_options.html", {
         "form": form,
         "times": times,
@@ -228,3 +229,27 @@ def manager_appointments(request):
         "appointments": appointments,
         "total": appointments.count(),
     })
+
+
+@manager_required
+@require_POST
+def manager_time_option_toggle(request, pk):
+    obj = get_object_or_404(TimeOption, pk=pk, trashed=False)
+    obj.disable = not obj.disable
+    obj.save(update_fields=["disable", "updated_at"])
+    if obj.disable:
+        messages.info(request, f"Horário {obj.horario} desativado.")
+    else:
+        messages.success(request, f"Horário {obj.horario} reativado.")
+    return redirect("core:manager_time_options")
+
+
+@manager_required
+@require_POST
+def manager_time_option_trash(request, pk):
+    obj = get_object_or_404(TimeOption, pk=pk, trashed=False)
+    obj.trashed = True
+    obj.trashed_at = timezone.now()
+    obj.save(update_fields=["trashed", "trashed_at", "updated_at"])
+    messages.warning(request, f"Horário {obj.horario} enviado para lixeira.")
+    return redirect("core:manager_time_options")
