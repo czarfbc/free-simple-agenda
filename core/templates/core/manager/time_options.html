@@ -1,0 +1,43 @@
+{% extends "core/manager/base_manager.html" %}
+{% block title %}Opções de Horário{% endblock %}
+{% block content %}
+<div class="grid md:grid-cols-3 gap-6">
+  <section class="md:col-span-1 bg-white rounded-2xl p-5 shadow">
+    <h2 class="text-lg font-semibold mb-3">Novo horário</h2>
+    <form method="post" class="space-y-3">
+      {% csrf_token %}
+      <div>
+        <label class="block text-sm mb-1">Horário</label>
+        {{ form.horario }}
+      </div>
+      <div class="flex items-center gap-2">
+        {{ form.disable }} <span class="text-sm">Desabilitado</span>
+      </div>
+      <button class="rounded-lg bg-blue-600 text-white px-4 py-2">Salvar</button>
+    </form>
+  </section>
+  <section class="md:col-span-2 bg-white rounded-2xl p-5 shadow">
+    <h2 class="text-lg font-semibold mb-3">Horários</h2>
+    <table class="w-full border text-sm">
+      <thead class="bg-slate-100">
+        <tr>
+          <th class="text-left p-2 border">Horário</th>
+          <th class="text-left p-2 border">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in times %}
+          <tr class="border-b">
+            <td class="p-2 border">{{ t.horario|time:"H:i" }}</td>
+            <td class="p-2 border">
+              {% if t.disable %}<span class="text-red-600">Desabilitado</span>{% else %}<span class="text-green-700">Ativo</span>{% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td class="p-3 text-slate-500" colspan="2">Nenhum horário cadastrado.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>
+{% endblock %}

@@ -1,0 +1,17 @@
+{% if times %}
+  <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+    {% for t in times %}
+      <button
+        type="button"
+        hx-get="{% url 'core:book_form' %}?booking_date={{ selected_date|date:'Y-m-d' }}&time_id={{ t.id }}"
+        hx-target="#modal-slot"
+        hx-swap="innerHTML"
+        class="w-full rounded-xl border px-4 py-3 text-center hover:border-blue-500 hover:bg-blue-50 transition"
+      >
+        {% if t.horario %}{{ t.horario|time:"H:i" }}{% else %}{{ t.horario }}{% endif %}
+      </button>
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="text-slate-500">Nenhum horário livre para esta data.</div>
+{% endif %}

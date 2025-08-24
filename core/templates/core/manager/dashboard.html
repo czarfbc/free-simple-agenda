@@ -1,0 +1,18 @@
+{% extends "core/manager/base_manager.html" %}
+{% block title %}Painel do Manager{% endblock %}
+{% block content %}
+<div class="grid md:grid-cols-2 gap-6">
+  <a href="{% url 'core:manager_time_options' %}" class="rounded-2xl bg-white p-6 shadow hover:shadow-lg transition">
+    <h2 class="text-lg font-semibold mb-1">Opções de Horário</h2>
+    <p class="text-slate-600">Cadastre horários disponíveis para agendamentos.</p>
+  </a>
+  <a href="{% url 'core:manager_services' %}" class="rounded-2xl bg-white p-6 shadow hover:shadow-lg transition">
+    <h2 class="text-lg font-semibold mb-1">Serviços</h2>
+    <p class="text-slate-600">Gerencie serviços e valores.</p>
+  </a>
+  <a href="{% url 'core:manager_appointments' %}" class="rounded-2xl bg-white p-6 shadow hover:shadow-lg transition">
+    <h2 class="text-lg font-semibold mb-1">Compromissos</h2>
+    <p class="text-slate-600">Verifique os itens agendados.</p>
+  </a>
+</div>
+{% endblock %}

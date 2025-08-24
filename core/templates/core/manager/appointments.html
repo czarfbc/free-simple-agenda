@@ -1,0 +1,45 @@
+{% extends "core/manager/base_manager.html" %}
+{% block title %}Appointments por data{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-2xl shadow p-5 mb-4">
+  <form method="get" class="flex flex-col sm:flex-row gap-3 items-start sm:items-end">
+    <div>
+      <label class="block text-sm mb-1">Data</label>
+      <input type="date" name="date" value="{{ selected_date|date:'Y-m-d' }}"
+             class="rounded-lg border px-3 py-2" required>
+    </div>
+    <button class="rounded-lg bg-blue-600 text-white px-4 py-2">Filtrar</button>
+    <div class="text-slate-600 sm:ml-auto">Total: <span class="font-semibold">{{ total }}</span></div>
+  </form>
+</div>
+
+<div class="bg-white rounded-2xl shadow overflow-x-auto">
+  <table class="w-full text-sm">
+    <thead class="bg-slate-100">
+      <tr>
+        <th class="text-left p-2 border">Hora</th>
+        <th class="text-left p-2 border">Cliente</th>
+        <th class="text-left p-2 border">Telefone</th>
+        <th class="text-left p-2 border">Serviço</th>
+        <th class="text-left p-2 border">Obs.</th>
+        <th class="text-left p-2 border">Criado em</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in appointments %}
+        <tr class="border-b">
+          <td class="p-2 border">{{ a.booking_time.horario|time:"H:i" }}</td>
+          <td class="p-2 border">{{ a.client_name }}</td>
+          <td class="p-2 border">{{ a.client_phone }}</td>
+          <td class="p-2 border">{{ a.service.name }}</td>
+          <td class="p-2 border">{{ a.observation|default:"—" }}</td>
+          <td class="p-2 border">{{ a.created_at|date:"Y-m-d H:i" }}</td>
+        </tr>
+      {% empty %}
+        <tr><td class="p-3 text-slate-500" colspan="6">Sem agendamentos para esta data.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

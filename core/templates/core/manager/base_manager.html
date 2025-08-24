@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{% block title %}Manager{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="min-h-screen bg-slate-50 text-slate-800">
+    <header class="bg-white border-b">
+      <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+        <!-- Logo -->
+        <a href="{% url 'core:manager_dashboard' %}" class="text-xl font-semibold">
+          Painel do Manager
+        </a>
+
+        <!-- Botão hamburguer (mobile) -->
+        <button id="menu-btn"
+                class="md:hidden text-slate-700 focus:outline-none p-2 rounded-lg hover:bg-slate-100"
+                aria-label="Abrir menu de navegação"
+                aria-haspopup="dialog"
+                aria-controls="mobile-nav-modal">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2"
+               viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
+        <!-- Navegação (desktop) -->
+        <nav class="hidden md:flex md:flex-row md:items-center md:gap-3">
+          <a href="{% url 'core:manager_time_options' %}" class="text-slate-600 hover:text-slate-900">Opções de Horário</a>
+          <a href="{% url 'core:manager_services' %}" class="text-slate-600 hover:text-slate-900">Serviços</a>
+          <a href="{% url 'core:manager_appointments' %}" class="text-slate-600 hover:text-slate-900">Compromissos</a>
+          <form action="{% url 'core:manager_logout' %}" method="post">
+            {% csrf_token %}
+            <button class="rounded-lg bg-slate-900 text-white px-3 py-1.5">
+              Sair
+            </button>
+          </form>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Modal de navegação (mobile) -->
+    <div id="mobile-nav-modal"
+         class="fixed inset-0 z-50 hidden"
+         role="dialog"
+         aria-modal="true"
+         aria-labelledby="mobile-nav-title">
+      <!-- Overlay -->
+      <div class="absolute inset-0 bg-black/40"></div>
+
+      <!-- Conteúdo -->
+      <div class="relative mx-4 mt-24 rounded-2xl bg-white shadow-xl ring-1 ring-black/5">
+        <div class="flex items-center justify-between border-b px-4 py-3">
+          <h2 id="mobile-nav-title" class="text-base font-semibold">Menu</h2>
+          <button id="mobile-nav-close"
+                  class="p-2 rounded-md hover:bg-slate-100"
+                  aria-label="Fechar menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="px-4 py-3">
+          <div class="flex flex-col gap-2">
+            <a href="{% url 'core:manager_time_options' %}" class="rounded-lg px-3 py-2 hover:bg-slate-50 focus:bg-slate-50 focus:outline-none">Opções de Horário</a>
+            <a href="{% url 'core:manager_services' %}" class="rounded-lg px-3 py-2 hover:bg-slate-50 focus:bg-slate-50 focus:outline-none">Serviços</a>
+            <a href="{% url 'core:manager_appointments' %}" class="rounded-lg px-3 py-2 hover:bg-slate-50 focus:bg-slate-50 focus:outline-none">Compromissos</a>
+
+            <form action="{% url 'core:manager_logout' %}" method="post" class="pt-2">
+              {% csrf_token %}
+              <button class="w-full rounded-lg bg-slate-900 text-white px-3 py-2">
+                Sair
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <main class="max-w-5xl mx-auto p-4 md:p-6">
+      {% if messages %}
+        <div class="space-y-2 mb-4">
+          {% for m in messages %}
+            <div class="rounded-lg px-4 py-2 {% if m.tags == 'error' %}bg-red-100 text-red-800{% else %}bg-green-100 text-green-800{% endif %}">
+              {{ m }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+
+    <script>
+      (function () {
+        const btnOpen = document.getElementById('menu-btn');
+        const modal = document.getElementById('mobile-nav-modal');
+        const btnClose = document.getElementById('mobile-nav-close');
+
+        // Elemento focável inicial no modal
+        const firstFocusable = () => modal.querySelector('a, button, [tabindex]:not([tabindex="-1"])');
+
+        function openModal() {
+          modal.classList.remove('hidden');
+          // trava a rolagem do body quando o modal abre
+          document.documentElement.classList.add('overflow-hidden');
+          // foco inicial
+          const f = firstFocusable();
+          f && f.focus();
+          // acessibilidade do botão
+          btnOpen.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeModal() {
+          modal.classList.add('hidden');
+          document.documentElement.classList.remove('overflow-hidden');
+          btnOpen.removeAttribute('aria-expanded');
+          btnOpen.focus();
+        }
+
+        // Abertura
+        btnOpen.addEventListener('click', openModal);
+
+        // Fechamento por botão
+        btnClose.addEventListener('click', closeModal);
+
+        // Fechamento clicando fora (overlay)
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal || e.target.classList.contains('bg-black/40')) {
+            closeModal();
+          }
+        });
+
+        // Fechar com ESC e manter foco dentro do modal (focus trap simples)
+        document.addEventListener('keydown', (e) => {
+          if (modal.classList.contains('hidden')) return;
+
+          if (e.key === 'Escape') {
+            e.preventDefault();
+            closeModal();
+          }
+
+          if (e.key === 'Tab') {
+            const focusables = modal.querySelectorAll('a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])');
+            const fArray = Array.from(focusables);
+            if (!fArray.length) return;
+
+            const first = fArray[0];
+            const last = fArray[fArray.length - 1];
+
+            if (e.shiftKey && document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            } else if (!e.shiftKey && document.activeElement === last) {
+              e.preventDefault();
+              first.focus();
+            }
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,49 @@
+{% extends "core/manager/base_manager.html" %}
+{% block title %}Services{% endblock %}
+{% block content %}
+<div class="grid md:grid-cols-3 gap-6">
+  <section class="md:col-span-1 bg-white rounded-2xl p-5 shadow">
+    <h2 class="text-lg font-semibold mb-3">Novo serviço</h2>
+    <form method="post" class="space-y-3">
+      {% csrf_token %}
+      <div>
+        <label class="block text-sm mb-1">Nome</label>
+        {{ form.name }}
+      </div>
+      <div>
+        <label class="block text-sm mb-1">Preço (R$)</label>
+        {{ form.price_brl }}
+      </div>
+      <div class="flex items-center gap-2">
+        {{ form.disable }} <span class="text-sm">Desabilitado</span>
+      </div>
+      <button class="rounded-lg bg-blue-600 text-white px-4 py-2">Salvar</button>
+    </form>
+  </section>
+  <section class="md:col-span-2 bg-white rounded-2xl p-5 shadow">
+    <h2 class="text-lg font-semibold mb-3">Serviços</h2>
+    <table class="w-full border text-sm">
+      <thead class="bg-slate-100">
+        <tr>
+          <th class="text-left p-2 border">Nome</th>
+          <th class="text-left p-2 border">Preço</th>
+          <th class="text-left p-2 border">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for s in services %}
+          <tr class="border-b">
+            <td class="p-2 border">{{ s.name }}</td>
+            <td class="p-2 border">R$ {{ s.price_brl|default:"0"|floatformat:2 }}</td>
+            <td class="p-2 border">
+              {% if s.disable %}<span class="text-red-600">Desabilitado</span>{% else %}<span class="text-green-700">Ativo</span>{% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td class="p-3 text-slate-500" colspan="3">Nenhum serviço cadastrado.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>
+{% endblock %}
