@@ -1,28 +1,37 @@
 {% extends "core/manager/base_manager.html" %}
 {% block title %}Opções de Horário{% endblock %}
 {% block content %}
-<div class="grid md:grid-cols-3 gap-6">
+<div class="grid grid-cols-1 gap-6">
   <section class="md:col-span-1 bg-white rounded-2xl p-5 shadow">
     <h2 class="text-lg font-semibold mb-3">Novo horário</h2>
     <form method="post" class="space-y-3">
       {% csrf_token %}
-      <div>
-        <label class="block text-sm mb-1">Horário</label>
-        {{ form.horario }}
-      </div>
-      <div class="flex items-center gap-2">
+        <div class="grid md:grid-cols-3 gap-6">
+          <div>
+            <label class="block text-sm mb-1">Horário</label>
+            {{ form.horario }}
+          </div>
+
+          <div></div>
+
+          <div class="block relative mt-10">
+            <button class="absolute bottom-0 rounded-lg w-full bg-blue-600 text-white px-4 py-2">Salvar</button>
+          </div>
+
+         <!-- <div class="flex items-center gap-2">
         {{ form.disable }} <span class="text-sm">Desabilitado</span>
+        </div> -->
       </div>
-      <button class="rounded-lg bg-blue-600 text-white px-4 py-2">Salvar</button>
     </form>
   </section>
-  <section class="md:col-span-2 bg-white rounded-2xl p-5 shadow">
+  <section class="md:col-span-2 bg-white rounded-2xl p-5 shadow overflow-x-auto">
     <h2 class="text-lg font-semibold mb-3">Horários</h2>
     <table class="w-full border text-sm">
       <thead class="bg-slate-100">
         <tr>
-          <th class="text-left p-2 border">Horário</th>
-          <th class="text-left p-2 border">Status</th>
+          <th class="min-w-[200px] text-left p-2 border">Horário</th>
+          <th class="min-w-[200px] text-left p-2 border">Status</th>
+          <th class="min-w-[50px] text-left p-2 border">Ações</th>
         </tr>
       </thead>
       <tbody>
