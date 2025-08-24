@@ -2,6 +2,7 @@
 {% block title %}Services{% endblock %}
 {% block content %}
 <div class="grid grid-cols-1 gap-6">
+  <!-- Novo serviço -->
   <section class="md:col-span-2 bg-white rounded-2xl p-5 shadow">
     <h2 class="text-lg font-semibold mb-3">Novo serviço</h2>
     <form method="post" class="space-y-3">
@@ -18,15 +19,15 @@
         </div>
 
         <div class="block relative mt-10">
-          <button class="absolute bottom-0 rounded-lg w-full bg-blue-600 text-white px-4 py-2">Salvar</button>
+          <button class="absolute bottom-0 rounded-lg w-full bg-blue-600 text-white px-4 py-2">
+            Salvar
+          </button>
         </div>
       </div>
-      <!-- <div class="flex items-center gap-2">
-        {{ form.disable }} <span class="text-sm">Desabilitado</span>
-      </div> -->
     </form>
   </section>
 
+  <!-- Lista de serviços -->
   <section class="md:col-span-2 bg-white rounded-2xl p-5 shadow overflow-x-auto">
     <h2 class="text-lg font-semibold mb-3">Serviços</h2>
     <table class="w-full border text-sm">
@@ -35,7 +36,7 @@
           <th class="min-w-[200px] text-left p-2 border">Nome</th>
           <th class="min-w-[100px] text-left p-2 border">Preço</th>
           <th class="min-w-[100px] text-left p-2 border">Status</th>
-          <th class="min-w-[50px] text-left p-2 border">Ações</th>
+          <th class="w-[80px] text-center p-2 border">Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -44,11 +45,42 @@
             <td class="p-2 border">{{ s.name }}</td>
             <td class="p-2 border">R$ {{ s.price_brl|default:"0"|floatformat:2 }}</td>
             <td class="p-2 border">
-              {% if s.disable %}<span class="text-red-600">Desabilitado</span>{% else %}<span class="text-green-700">Ativo</span>{% endif %}
+              {% if s.disable %}
+                <span class="text-red-600">Desabilitado</span>
+              {% else %}
+                <span class="text-green-700">Ativo</span>
+              {% endif %}
+            </td>
+            <td class="p-2 border text-center">
+              <div class="inline-flex items-center justify-center gap-4">
+                <!-- Botão Toggle -->
+                <form method="post" action="{% url 'core:manager_service_toggle' s.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="p-1 rounded hover:bg-slate-100" title="{% if s.disable %}Reativar{% else %}Desativar{% endif %}">
+                    {% if s.disable %}
+                      <!-- olho -->
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+                    {% else %}
+                      <!-- olho cortado -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off-icon lucide-eye-off"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>
+                    {% endif %}
+                  </button>
+                </form>
+
+                <!-- Botão Excluir -->
+                <form method="post" action="{% url 'core:manager_service_trash' s.id %}" onsubmit="return confirm('Excluir este serviço?');">
+                  {% csrf_token %}
+                  <button type="submit" class="p-1 rounded hover:bg-slate-100 text-red-600" title="Excluir">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  </button>
+                </form>
+              </div>
             </td>
           </tr>
         {% empty %}
-          <tr><td class="p-3 text-slate-500" colspan="3">Nenhum serviço cadastrado.</td></tr>
+          <tr>
+            <td class="p-3 text-slate-500" colspan="4">Nenhum serviço cadastrado.</td>
+          </tr>
         {% endfor %}
       </tbody>
     </table>

@@ -23,6 +23,10 @@ urlpatterns = [
          views.manager_time_option_toggle, name="manager_time_option_toggle"),
     path("manager/time-options/<uuid:pk>/trash/",
          views.manager_time_option_trash, name="manager_time_option_trash"),
+    path("manager/services/<uuid:pk>/toggle/",
+         views.manager_service_toggle, name="manager_service_toggle"),
+    path("manager/services/<uuid:pk>/trash/",
+         views.manager_service_trash, name="manager_service_trash"),
 
     # manager: appointment
     path("manager/appointments/", views.manager_appointments,

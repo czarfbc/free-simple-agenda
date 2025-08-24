@@ -253,3 +253,21 @@ def manager_time_option_trash(request, pk):
     obj.save(update_fields=["trashed", "trashed_at", "updated_at"])
     messages.warning(request, f"Horário {obj.horario} enviado para lixeira.")
     return redirect("core:manager_time_options")
+
+
+@manager_required
+@require_POST
+def manager_service_toggle(request, pk):
+    obj = get_object_or_404(Service, pk=pk, trashed=False)
+    obj.disable = not obj.disable
+    obj.save(update_fields=["disable", "updated_at"])
+    return redirect("core:manager_services")
+
+
+@manager_required
+@require_POST
+def manager_service_trash(request, pk):
+    obj = get_object_or_404(Service, pk=pk, trashed=False)
+    obj.trashed = True
+    obj.save(update_fields=["trashed", "updated_at"])
+    return redirect("core:manager_services")
