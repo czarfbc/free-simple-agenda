@@ -30,7 +30,7 @@
         <tr>
           <th class="min-w-[200px] text-left p-2 border">Horário</th>
           <th class="min-w-[150px] text-left p-2 border">Status</th>
-          <th class="min-w-[50px] text-center p-2 border">Ações</th>
+          <th class="w-[80px] text-center p-2 border">Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -45,14 +45,14 @@
               {% endif %}
             </td>
             <td class="p-2 border text-center">
-              <div class="inline-flex gap-2">
+              <div class="inline-flex items-center justify-center gap-4">
                 <!-- Botão Toggle -->
                 <form method="post" action="{% url 'core:manager_time_option_toggle' t.id %}">
                   {% csrf_token %}
                   <button type="submit" class="p-1 rounded hover:bg-slate-100" title="{% if t.disable %}Reativar{% else %}Desativar{% endif %}">
                     {% if t.disable %}
                       <!-- ícone olho -->
-                   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-icon lucide-eye"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
                     {% else %}
                       <!-- ícone olho cortado -->
                       <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#808080" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-eye-off-icon lucide-eye-off"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></svg>
@@ -64,7 +64,7 @@
                 <form method="post" action="{% url 'core:manager_time_option_trash' t.id %}" onsubmit="return confirm('Excluir este horário?');">
                   {% csrf_token %}
                   <button type="submit" class="p-1 rounded hover:bg-slate-100 text-red-600" title="Excluir">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff0000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
                   </button>
                 </form>
               </div>
