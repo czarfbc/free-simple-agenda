@@ -5,10 +5,15 @@
       <button aria-label="fechar" class="text-slate-500 hover:text-slate-700">✕</button>
     </div>
     <p class="mb-4">
-      {{ appointment.client_name|default:"Cliente" }} — 
+      {{ appointment.client_name|default:"Cliente" }}
+    </p>
+    <p class="mb-4">
       {{ appointment.booking_date|date:"d \\d\\e F \\d\\e Y" }} às {{ appointment.booking_time.horario|time:"H:i" }}
     </p>
-    <a href="{% url 'core:booking_page' %}" class="inline-flex rounded-lg bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 transition">
+    <p class="mb-4">
+      {{ appointment.service.name }} - R$: {{ appointment.service.price_brl }}
+    </p>
+    <a href="{% url 'core:booking_page' %}" class="flex items-center justify-center w-full rounded-lg bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 transition">
       OK
     </a>
   </div>

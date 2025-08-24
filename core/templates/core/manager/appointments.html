@@ -34,7 +34,7 @@
           <td class="p-2 border">{{ a.client_phone }}</td>
           <td class="p-2 border">{{ a.service.name }}</td>
           <td class="p-2 border">{{ a.observation|default:"—" }}</td>
-          <td class="p-2 border">{{ a.created_at|date:"Y-m-d H:i" }}</td>
+          <td class="p-2 border">{{ a.created_at|date:"H:i d-m-Y" }}</td>
         </tr>
       {% empty %}
         <tr><td class="p-3 text-slate-500" colspan="6">Sem agendamentos para esta data.</td></tr>
