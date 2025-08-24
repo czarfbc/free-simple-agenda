@@ -2,7 +2,7 @@
 {% block title %}Marcar horário{% endblock %}
 
 {% block content %}
-<div class="grid md:grid-cols-2 gap-6">
+<div class="grid grid-cols-1 gap-6">
   <!-- Card: Escolha de data -->
   <section class="bg-white rounded-2xl shadow p-5">
     <h2 class="text-lg font-semibold mb-3">Escolha a data</h2>
@@ -15,26 +15,30 @@
       class="space-y-3"
     >
       {% csrf_token %}
-      <input
-        type="date"
-        name="date"
-        required
-        placeholder="dd/mm/aaaa"
-        class="w-full rounded-lg border border-slate-300 px-3 py-2"
-        value="{{ selected_date|default:'' }}"
-        hx-trigger="change changed delay:100ms from:closest form"
-      />
+      <div class="grid md:grid-cols-3 gap-6">
+        <input
+          type="date"
+          name="date"
+          required
+          placeholder="dd/mm/aaaa"
+          class="w-full rounded-lg border border-slate-300 px-3 py-2"
+          value="{{ selected_date|default:'' }}"
+          hx-trigger="change changed delay:100ms from:closest form"
+        />
+
+        <div></div>
+
+        <button
+          type="submit"
+          class="w-full md:w-auto inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 transition"
+        >
+          Ver horários
+        </button>
+      </div>
 
       <p class="text-sm text-slate-500">
         Selecione uma data para ver os horários disponíveis.
       </p>
-
-      <button
-        type="submit"
-        class="w-full md:w-auto inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 transition"
-      >
-        Ver horários
-      </button>
     </form>
   </section>
 
